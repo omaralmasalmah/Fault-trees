@@ -2,41 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Select a Fault Tree Diagram</title>
+  <title>Interactive Fault Tree Viewer</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
+      padding: 30px;
       text-align: center;
     }
-    select, button {
+    select {
       font-size: 16px;
-      padding: 10px;
-      margin: 10px;
+      padding: 8px;
+      margin-bottom: 20px;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <h1>View a Fault Tree Diagram</h1>
+  <h1>Select a Fault Tree to Display</h1>
 
-  <label for="diagramSelect">Choose a diagram:</label>
-  <select id="diagramSelect">
-    <option value="">-- Select a diagram --</option>
-    <option value="Fault%20tree%20-%20retention%20ponds.drawio">Fault Tree – Retention Ponds</option>
-    <option value="Fault%20tree%20-%20permeable%20pavement.drawio">Fault Tree – Permeable Pavement</option>
-    <option value="Fault%20tree%20-%20bioswale.drawio">Fault Tree – Bioswale</option>
+  <select id="diagramSelector" onchange="loadDiagram()">
+    <option value="">-- Choose a diagram --</option>
+    <option value="Fault tree - retention ponds.drawio">Fault Tree – Retention Ponds</option>
+    <option value="Fault tree - permeable pavement.drawio">Fault Tree – Permeable Pavement</option>
+    <option value="Fault tree - bioswale.drawio">Fault Tree – Bioswale</option>
   </select>
 
   <br>
-  <button onclick="openViewer()">View Diagram</button>
+  <iframe id="diagramFrame" src=""></iframe>
 
   <script>
-    function openViewer() {
-      const file = document.getElementById("diagramSelect").value;
+    function loadDiagram() {
+      const file = document.getElementById("diagramSelector").value;
+      const iframe = document.getElementById("diagramFrame");
       if (file) {
-        window.location.href = `viewer.html?file=${file}`;
+        const baseUrl = "https://omaralmasalmah.github.io/Fault-trees/";
+        const fullUrl = "https://viewer.diagrams.net/?url=" + encodeURIComponent(baseUrl + file);
+        iframe.src = fullUrl;
       } else {
-        alert("Please select a diagram.");
+        iframe.src = "";
       }
     }
   </script>
